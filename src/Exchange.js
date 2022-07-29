@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import "./App.css";
 
 export default function Exchange(props) {
-  console.log(props);
-  let [value, setValue] = useState(0);
+  let eurMultiplier = props.data[1].buy;
+  let [value, setValue] = useState(null);
+  let [convertedValue, setConvertedValue] = useState(null);
+
   function handleChange(event) {
-    let convertedValue = event.target.value * 10;
-    setValue(convertedValue);
+    setValue(event.target.value);
+    setConvertedValue(value + 1);
   }
 
   return (
@@ -22,9 +24,9 @@ export default function Exchange(props) {
         </div>
         <div className="col-3">
           <select class="form-select" aria-label="Default select example">
-            <option selected>Українська гривня</option>
+            <option selected>EUR</option>
             <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
+            <option value="EUR">UAH</option>
             <option value="RUR">RUR</option>
           </select>
         </div>
@@ -35,12 +37,12 @@ export default function Exchange(props) {
           <input
             type="number"
             className="valueInput"
-            placeholder={value}
+            placeholder={convertedValue}
           ></input>{" "}
         </div>
         <div className="col-3">
           <select class="form-select" aria-label="Default select example">
-            <option selected>Євро</option>
+            <option selected>UAH</option>
             <option value="USD">USD</option>
             <option value="EUR">EUR</option>
             <option value="RUR">RUR</option>
