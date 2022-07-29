@@ -5,7 +5,7 @@ export default function Currency(props) {
   // console.log(props.data.data[0].ccy);
 
   return (
-    <div className="currency-wrappers">
+    <div className="currency-wrapper">
       <ul>
         {props.data.map(function (currency, index) {
           if (index < 3) {

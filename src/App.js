@@ -2,6 +2,7 @@ import "./App.css";
 import React, { useState } from "react";
 import axios from "axios";
 import Currency from "./Currency";
+import Exchange from "./Exchange";
 
 export default function App() {
   let apiUrl = `https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11`;
@@ -12,9 +13,12 @@ export default function App() {
 
   if (data) {
     return (
-      <header>
-        <Currency data={data} />
-      </header>
+      <div className="container">
+        <header>
+          <Currency data={data} />
+        </header>
+        <Exchange data={data} />
+      </div>
     );
   } else {
     axios.get(apiUrl).then(handleResponse);
