@@ -4,11 +4,10 @@ import "./App.css";
 export default function Exchange(props) {
   let eurMultiplier = props.data[1].buy;
   let [value, setValue] = useState(null);
-  let [convertedValue, setConvertedValue] = useState(null);
+  let convertedValue = value * eurMultiplier;
 
   function handleChange(event) {
     setValue(event.target.value);
-    setConvertedValue(value + 1);
   }
 
   return (
