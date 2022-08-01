@@ -3,11 +3,19 @@ import "./App.css";
 
 export default function Exchange(props) {
   let eurMultiplier = props.data[1].buy;
+  let eurDivider = props.data[1].sale;
   let [value, setValue] = useState(null);
   let convertedValue = value * eurMultiplier;
 
+  let [uahValue, setUahValue] = useState(null);
+  let convertedUahValue = uahValue / eurDivider;
+
   function handleChange(event) {
     setValue(event.target.value);
+  }
+
+  function handleUAHChange(event) {
+    setUahValue(event.target.value);
   }
 
   return (
@@ -17,7 +25,7 @@ export default function Exchange(props) {
           <input
             type="number"
             className="valueInput"
-            placeholder="1"
+            placeholder={convertedUahValue}
             onChange={handleChange}
           ></input>{" "}
         </div>
@@ -37,6 +45,7 @@ export default function Exchange(props) {
             type="number"
             className="valueInput"
             placeholder={convertedValue}
+            onChange={handleUAHChange}
           ></input>{" "}
         </div>
         <div className="col-3">
