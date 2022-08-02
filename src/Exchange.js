@@ -1,22 +1,72 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 
+const FROM_CUR = ["EUR", "USD", "UAH", "RUR"];
+const TO_CUR = ["UAH", "EUR", "USD", "RUR"];
+
 export default function Exchange(props) {
-  let eurMultiplier = props.data[1].buy;
-  let eurDivider = props.data[1].sale;
-  let [value, setValue] = useState(null);
-  let convertedValue = value * eurMultiplier;
+  let [fromAmount, setFromAmount] = useState(1);
+  let [toAmount, setToAmount] = useState("");
+  const [buyOrSell, setBuyOrSell] = useState("buy");
+  const [conversion, setConversion] = useState({});
+  const [conversionKey, setConversionKey] = useState(FROM_CUR[0]);
+  const [convertFrom, setConvertFrom] = useState(FROM_CUR[0]);
+  const [convertTo, setConvertTo] = useState(TO_CUR[0]);
 
-  let [uahValue, setUahValue] = useState(null);
-  let convertedUahValue = uahValue / eurDivider;
-
-  function handleChange(event) {
-    setValue(event.target.value);
+  function handleFromChange(event) {
+    const newFromAmount = event.target.value;
+    setFromAmount(newFromAmount);
+    if (newFromAmount === "") {
+      setToAmount("");
+    } else {
+      const fromNum = parseFloat(newFromAmount);
+      const multiplierStr = conversion[conversionKey][buyOrSell];
+      const multiplier = parseFloat(multiplierStr);
+      setToAmount((fromNum * multiplier).toFixed(2));
+    }
+  }
+  function handleToChange(event) {
+    const newToAmount = event.target.value;
+    setToAmount(newToAmount);
+    if (newToAmount === "" || newToAmount === "0") {
+      setFromAmount("");
+    } else {
+      const toNum = parseFloat(newToAmount);
+      const multiplierStr = conversion[conversionKey][buyOrSell];
+      const multiplier = parseFloat(multiplierStr);
+      setFromAmount((toNum / multiplier).toFixed(2));
+    }
   }
 
-  function handleUAHChange(event) {
-    setUahValue(event.target.value);
-  }
+  useEffect(() => {
+    const newConversion = {};
+    props.data.forEach((item) => {
+      if (item.base_ccy === "UAH") {
+        newConversion[item.ccy] = item;
+      }
+    });
+    console.log("1stUseEffect");
+    setConversion(newConversion);
+  }, [props.data]);
+
+  useEffect(() => {
+    if (!conversion[convertFrom]) {
+      setBuyOrSell("sale");
+      setConversionKey(convertTo);
+    } else {
+      setBuyOrSell("buy");
+      setConversionKey(convertFrom);
+    }
+    console.log("2ndUseEffect");
+  }, [conversion, convertFrom, convertTo]);
+
+  useEffect(() => {
+    console.log("Only once");
+  }, []);
+
+  useEffect(() => {
+    console.log("input changed");
+  }, [fromAmount]);
 
   return (
     <form>
@@ -25,16 +75,26 @@ export default function Exchange(props) {
           <input
             type="number"
             className="valueInput"
-            placeholder={convertedUahValue}
-            onChange={handleChange}
+            value={fromAmount}
+            onChange={handleFromChange}
           ></input>{" "}
         </div>
         <div className="col-3">
-          <select class="form-select" aria-label="Default select example">
-            <option selected>EUR</option>
-            <option value="USD">USD</option>
-            <option value="EUR">UAH</option>
-            <option value="RUR">RUR</option>
+          <select
+            className="form-select"
+            aria-label="Default select example"
+            value={convertFrom}
+            onChange={(event) => {
+              setConvertFrom(event.target.value);
+              setFromAmount("");
+              setToAmount("");
+            }}
+          >
+            {FROM_CUR.map((value) => (
+              <option key={value} value={value}>
+                {value}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -44,16 +104,26 @@ export default function Exchange(props) {
           <input
             type="number"
             className="valueInput"
-            placeholder={convertedValue}
-            onChange={handleUAHChange}
+            value={toAmount}
+            onChange={handleToChange}
           ></input>{" "}
         </div>
         <div className="col-3">
-          <select class="form-select" aria-label="Default select example">
-            <option selected>UAH</option>
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="RUR">RUR</option>
+          <select
+            className="form-select"
+            aria-label="Default select example"
+            value={convertTo}
+            onChange={(event) => {
+              setConvertTo(event.target.value);
+              setFromAmount("");
+              setToAmount("");
+            }}
+          >
+            {TO_CUR.map((value) => (
+              <option key={value} value={value}>
+                {value}
+              </option>
+            ))}
           </select>
         </div>
       </div>

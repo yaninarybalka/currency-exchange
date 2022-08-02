@@ -7,18 +7,14 @@ export default function Currency(props) {
   return (
     <div className="currency-wrapper">
       <ul>
-        {props.data.map(function (currency, index) {
-          if (index < 3) {
-            return (
-              <li key={index}>
-                {" "}
-                <strong> {currency.ccy} </strong>
-                {currency.buy} / {currency.sale}
-              </li>
-            );
-          } else {
-            return null;
-          }
+        {props.data.map(function (currency) {
+          return (
+            <li key={currency.ccy}>
+              {" "}
+              <strong> {currency.ccy} </strong>
+              {currency.buy} / {currency.sale}
+            </li>
+          );
         })}
       </ul>
     </div>
