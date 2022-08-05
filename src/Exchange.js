@@ -45,7 +45,7 @@ export default function Exchange(props) {
         newConversion[item.ccy] = item;
       }
     });
-    console.log("1stUseEffect");
+
     setConversion(newConversion);
   }, [props.data]);
 
@@ -57,16 +57,7 @@ export default function Exchange(props) {
       setBuyOrSell("buy");
       setConversionKey(convertFrom);
     }
-    console.log("2ndUseEffect");
   }, [conversion, convertFrom, convertTo]);
-
-  useEffect(() => {
-    console.log("Only once");
-  }, []);
-
-  useEffect(() => {
-    console.log("input changed");
-  }, [fromAmount]);
 
   return (
     <form>

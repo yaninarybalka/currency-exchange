@@ -22,7 +22,6 @@ export default function App() {
         );
         setData(data);
         setMultiplier(data);
-        console.log("handleResponse");
       });
 
     return () => {
