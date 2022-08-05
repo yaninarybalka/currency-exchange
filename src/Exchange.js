@@ -16,25 +16,59 @@ export default function Exchange(props) {
   function handleFromChange(event) {
     const newFromAmount = event.target.value;
     setFromAmount(newFromAmount);
+    const fromNum = parseFloat(newFromAmount);
+    const multiplierStr = conversion[conversionKey][buyOrSell];
+    const multiplier = parseFloat(multiplierStr);
+
     if (newFromAmount === "") {
       setToAmount("");
     } else {
-      const fromNum = parseFloat(newFromAmount);
-      const multiplierStr = conversion[conversionKey][buyOrSell];
-      const multiplier = parseFloat(multiplierStr);
-      setToAmount((fromNum * multiplier).toFixed(2));
+      if (buyOrSell === "buy") {
+        setToAmount((fromNum * multiplier).toFixed(2));
+      } else {
+        setToAmount((fromNum / multiplier).toFixed(2));
+      }
     }
   }
+
   function handleToChange(event) {
     const newToAmount = event.target.value;
     setToAmount(newToAmount);
+    const toNum = parseFloat(newToAmount);
+    const multiplierStr = conversion[conversionKey][buyOrSell];
+    const multiplier = parseFloat(multiplierStr);
+
     if (newToAmount === "" || newToAmount === "0") {
       setFromAmount("");
     } else {
-      const toNum = parseFloat(newToAmount);
-      const multiplierStr = conversion[conversionKey][buyOrSell];
-      const multiplier = parseFloat(multiplierStr);
-      setFromAmount((toNum / multiplier).toFixed(2));
+      if (buyOrSell === "buy") {
+        setFromAmount((toNum / multiplier).toFixed(2));
+      } else {
+        setFromAmount((toNum * multiplier).toFixed(2));
+      }
+    }
+  }
+
+  function handleFromCurrencyChange(event) {
+    setConvertFrom(event.target.value);
+    setFromAmount("");
+    setToAmount("");
+    if (event.target.value === "UAH") {
+      setConvertTo("EUR");
+    } else if (event.target.value === convertTo) {
+      setConvertTo("UAH");
+    }
+  }
+
+  function handleToCurrencyChange(event) {
+    setConvertTo(event.target.value);
+    setFromAmount("");
+    setToAmount("");
+    if (event.target.value !== "UAH" && convertFrom !== "UAH") {
+      setConvertFrom("EUR");
+    }
+    if (event.target.value === "UAH" && convertFrom === "UAH") {
+      setConvertFrom("EUR");
     }
   }
 
@@ -75,11 +109,7 @@ export default function Exchange(props) {
             className="form-select"
             aria-label="Default select example"
             value={convertFrom}
-            onChange={(event) => {
-              setConvertFrom(event.target.value);
-              setFromAmount("");
-              setToAmount("");
-            }}
+            onChange={handleFromCurrencyChange}
           >
             {FROM_CUR.map((value) => (
               <option key={value} value={value}>
@@ -104,11 +134,7 @@ export default function Exchange(props) {
             className="form-select"
             aria-label="Default select example"
             value={convertTo}
-            onChange={(event) => {
-              setConvertTo(event.target.value);
-              setFromAmount("");
-              setToAmount("");
-            }}
+            onChange={handleToCurrencyChange}
           >
             {TO_CUR.map((value) => (
               <option key={value} value={value}>
