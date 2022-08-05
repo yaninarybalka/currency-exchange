@@ -34,11 +34,11 @@ export default function App() {
   }
 
   return (
-    <div className="container">
+    <body>
       <header>
         <Currency data={data} />
       </header>
       <Exchange data={multiplier} />
-    </div>
+    </body>
   );
 }

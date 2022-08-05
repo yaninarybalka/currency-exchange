@@ -94,56 +94,58 @@ export default function Exchange(props) {
   }, [conversion, convertFrom, convertTo]);
 
   return (
-    <form>
-      <div className="row pb-4">
-        <div className="col-2 input-wrapper">
-          <input
-            type="number"
-            className="valueInput"
-            value={fromAmount}
-            onChange={handleFromChange}
-          ></input>{" "}
+    <div className="container">
+      <form>
+        <div className="row pb-4">
+          <div className="col-2 input-wrapper">
+            <input
+              type="number"
+              className="valueInput"
+              value={fromAmount}
+              onChange={handleFromChange}
+            ></input>{" "}
+          </div>
+          <div className="col-3">
+            <select
+              className="form-select"
+              aria-label="Default select example"
+              value={convertFrom}
+              onChange={handleFromCurrencyChange}
+            >
+              {FROM_CUR.map((value) => (
+                <option key={value} value={value}>
+                  {value}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        <div className="col-3">
-          <select
-            className="form-select"
-            aria-label="Default select example"
-            value={convertFrom}
-            onChange={handleFromCurrencyChange}
-          >
-            {FROM_CUR.map((value) => (
-              <option key={value} value={value}>
-                {value}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
 
-      <div className="row">
-        <div className="col-2 input-wrapper">
-          <input
-            type="number"
-            className="valueInput"
-            value={toAmount}
-            onChange={handleToChange}
-          ></input>{" "}
+        <div className="row">
+          <div className="col-2 input-wrapper">
+            <input
+              type="number"
+              className="valueInput"
+              value={toAmount}
+              onChange={handleToChange}
+            ></input>{" "}
+          </div>
+          <div className="col-3">
+            <select
+              className="form-select"
+              aria-label="Default select example"
+              value={convertTo}
+              onChange={handleToCurrencyChange}
+            >
+              {TO_CUR.map((value) => (
+                <option key={value} value={value}>
+                  {value}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        <div className="col-3">
-          <select
-            className="form-select"
-            aria-label="Default select example"
-            value={convertTo}
-            onChange={handleToCurrencyChange}
-          >
-            {TO_CUR.map((value) => (
-              <option key={value} value={value}>
-                {value}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 }
